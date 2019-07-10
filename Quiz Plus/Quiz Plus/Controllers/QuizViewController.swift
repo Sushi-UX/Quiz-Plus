@@ -10,7 +10,6 @@
 
 import UIKit
 
-
 class quizCell: UITableViewCell{
     
     @IBOutlet weak var answerLabel: UILabel!    
@@ -18,8 +17,14 @@ class quizCell: UITableViewCell{
 
 class QuizViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var quizModule: Quiz! 
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return quizAnswerList.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        answerCheck = quizAnswerList[indexPath.row]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -28,11 +33,14 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-    
+    var answerCheck = "nothing"
     var quizAnswerList = ["answer 1", "answer 2", "answer 3", "answer 4"]
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var countLabel: UILabel!
+    
+    
     @IBAction func actionSubmit(_ sender: Any) {
+        chooseAnswer()
     }
     
     
@@ -43,21 +51,60 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         quizTable.delegate = self
         quizTable.dataSource = self
+        
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        quizModule.reset()
+        settup(check: true)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func settup(check: Bool){
+        if(check){
+            setCount()
+            setQuestion()
+            setChoices()
+            quizTable.reloadData()
+        }else{
+            performSegue(withIdentifier: "QuizToEnd", sender: nil)
+        }
     }
-    */
+    
+    func setCount(){
+        var temp = ""
+        temp.append(String(quizModule.giveCurrentQuestionValue()))
+        temp.append("/")
+        temp.append(String(quizModule.giveTotalQuestionCount()))
+        
+        countLabel.text = temp
+    }
+    
+    func setQuestion(){
+        questionLabel.text = quizModule.giveCurrentQuestion().giveQuestion()
+    }
+    
+    func setChoices(){
+        quizAnswerList = quizModule.giveCurrentQuestion().giveChoices()
+        answerCheck = quizAnswerList[0]
+    }
+    
+    func chooseAnswer(){
+        quizModule.InputAnswer(input: quizModule.giveCurrentQuestion().checkAnswer(input: answerCheck))
+        settup(check: quizModule.moveToNextQuestion())
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "QuizToEnd"){
+            var seg = segue.destination as! EndViewController
+            seg.quizModule = self.quizModule
+        }
+    }
 
 }

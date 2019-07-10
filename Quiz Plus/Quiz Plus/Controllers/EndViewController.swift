@@ -9,22 +9,44 @@
 import UIKit
 
 class EndViewController: UIViewController {
+    
+    var quizModule: Quiz!
 
+    @IBOutlet weak var correctLabel: UILabel!
+    
+    @IBOutlet weak var InCorrectLabel: UILabel!
+    
+    @IBOutlet weak var TotalLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        settup()
         // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    */
-
+    
+    func settup(){
+        setCorrect()
+        setIncoorect()
+        setTotal()
+    }
+    
+    
+    func setCorrect(){
+        correctLabel.text = String(quizModule.giveCorrectcount())
+    }
+    
+    func setIncoorect(){
+        InCorrectLabel.text = String(quizModule.giveIncorrectQuestionCount())
+    }
+    
+    func setTotal(){
+        TotalLabel.text = String(quizModule.giveTotalQuestionCount())
+    }
+    
+    
 }

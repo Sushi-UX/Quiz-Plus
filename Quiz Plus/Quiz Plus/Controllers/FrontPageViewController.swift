@@ -9,6 +9,8 @@
 import UIKit
 
 class FrontPageViewController: UIViewController {
+    
+    var quizModule: Quiz = Quiz.init()
 
     @IBAction func StartPress(_ sender: Any) {
         performSegue(withIdentifier: "startToQuiz", sender: nil)
@@ -24,14 +26,15 @@ class FrontPageViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "startToQuiz"){
+            var seg = segue.destination as! QuizViewController
+            seg.quizModule = self.quizModule
+        }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
-    */
+   
 
 }

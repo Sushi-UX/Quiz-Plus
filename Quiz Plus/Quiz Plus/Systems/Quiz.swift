@@ -28,7 +28,7 @@ class Quiz{
     func InputAnswer(input: Bool){
         if(input){
             correctCount += 1
-        }else{
+        } else{
             inCorrectCount += 1
         }
     }
@@ -46,12 +46,24 @@ class Quiz{
         return questionList.count
     }
     
+
+    func giveIncorrectQuestionCount() ->Int{
+        return inCorrectCount
+    }
+
+    
     func giveCurrentQuestionValue() -> Int{
         return (currentQuestion + 1)
     }
     
     func giveCorrectcount() -> Int{
         return correctCount
+    }
+    
+    func reset(){
+        currentQuestion = 0
+        inCorrectCount = 0
+        correctCount = 0
     }
 }
 
