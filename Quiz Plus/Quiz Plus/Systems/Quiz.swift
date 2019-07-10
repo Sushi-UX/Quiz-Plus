@@ -28,7 +28,7 @@ class Quiz{
     func InputAnswer(input: Bool){
         if(input){
             correctCount += 1
-        } else{
+        }else{
             inCorrectCount += 1
         }
     }
